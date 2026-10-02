@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import sys
+from pathlib import Path
 from scipy.integrate import solve_ivp
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
@@ -10,12 +12,31 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 
 SRC_DIR = PROJECT_ROOT / "src"
-DATA_DIR = PROJECT_ROOT / "Data"
+DATA_DIR = PROJECT_ROOT / "data"
 RESULTS_DIR = PROJECT_ROOT / "results"
 
 sys.path.append(str(SRC_DIR))
 
-import validation_model
+from validation_model import solve_cell_model
+
+val_file_extr = DATA_DIR / "Experimental_extracellular_data.csv"
+val_file_intr = DATA_DIR / "experimental_intracellular_data.csv"
+
+df_extr = pd.read_csv(val_file_extr, sep=";", header=None, decimal=",")
+df_intra = pd.read_csv(val_file_intr, sep=";", header=None, decimal=",")
+    
+# Przykładowe wyciągnięcie kolumn (np. czas i pomiary stężenia in vitro)
+
+PARAM_NAMES = {
+        'pH_in': r'$pH_{\mathrm{in}}$', 
+        'psi': r'$\psi$',
+        'Vexcl': r'$k_{\mathrm{bulk}}$', 
+        'k_fac_met': r'$k_{\mathrm{met}}$', 
+        'D': r'$D$', 
+        'k_fac_svct': r'$k_{\mathrm{svct}}$', 
+        'cell_vol_fac': r'$k_{\mathrm{surf}}$'
+    }
+PARAM_UNITS = ['', ' [V]', '', '', r' [$\mathrm{\mu}$m]', '', '']
 
 def calculate_metrics(t_model, y_model, df_exp):
     '''
@@ -100,7 +121,7 @@ def plot_baseline_fit(params, df_exp):
         plt.title('Baseline model validation with experimental data', pad=15)
         plt.tight_layout()
       
-        output_path = RESULTS_DIR / "figure_1_A.pdf"
+        output_path = RESULTS_DIR / "figure_1_A.png"
         plt.savefig(output_path, dpi=300)
         print(f"Wykres zapisano pomyślnie do: {output_path}")
 
@@ -173,7 +194,7 @@ def run_sensitivity_and_plot(params, bounds_dict, df_exp):
             
         plt.tight_layout()
 
-        output_path = RESULTS_DIR / "figure_2.pdf"
+        output_path = RESULTS_DIR / "figure_2.png"
         plt.savefig(output_path, dpi=300)
         print(f"Wykres zapisano pomyślnie do: {output_path}")
     
@@ -227,7 +248,7 @@ def plot_sensitivity_heatmap(res_min, res_max, bounds_dict):
             ax_center.text(0.8, y, str(w_max), ha='center', va='center', fontsize=11)
             
         plt.tight_layout()
-        output_path = RESULTS_DIR / "figure_1_BCD.pdf"
+        output_path = RESULTS_DIR / "figure_1_BCD.png"
         plt.savefig(output_path, dpi=300)
         print(f"Wykres zapisano pomyślnie do: {output_path}")
 
@@ -268,16 +289,6 @@ def main():
         'cell_vol_fac': [1, 3]
     }
     
-    PARAM_NAMES = {
-        'pH_in': r'$pH_{\mathrm{in}}$', 
-        'psi': r'$\psi$',
-        'Vexcl': r'$k_{\mathrm{bulk}}$', 
-        'k_fac_met': r'$k_{\mathrm{met}}$', 
-        'D': r'$D$', 
-        'k_fac_svct': r'$k_{\mathrm{svct}}$', 
-        'cell_vol_fac': r'$k_{\mathrm{surf}}$'
-    }
-    PARAM_UNITS = ['', ' [V]', '', '', r' [$\mathrm{\mu}$m]', '', '']
     # Figure 1 (A)
     plot_baseline_fit(PARAMS, df_intra)
      # Figure 2 
