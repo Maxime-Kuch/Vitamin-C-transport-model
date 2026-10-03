@@ -1,4 +1,6 @@
 import numpy as np
+import sys
+from pathlib import Path
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
@@ -11,7 +13,7 @@ RESULTS_DIR = PROJECT_ROOT / "results"
 
 sys.path.append(str(SRC_DIR))
 
-from intestinal_wall_model import simulate_transport
+from intestinal_wall_model import simulate_transport, J_impulse
 
 
 def kinetics(conc_params, t_max, uptake, plots=True):
