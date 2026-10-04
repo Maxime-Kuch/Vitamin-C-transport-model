@@ -10,3 +10,18 @@ In order to reproduce the results presented in the manuscript run the correspond
 pip install -r requirements.txt
 ```
 **Model validation - figure 1 and figure 2**
+```bash
+python scripts/validation_figure1_figure2.py
+```
+**Intestinal wall transport - figure 3 and figure 4**
+```bash
+python scripts/Intestinal_model_figure3_figure4.py
+```
+**The mucus impact - figure 5**
+Here the simulations might take longer, mainly due to optimal mucus dose dependency plot, the script runs a substantial amount of simulations to produce the result. Thus 
+here the number of samples in the plot was reduced for a faster result with lower quality.
+```bash
+python scripts/Intestinal_model_figure5.py
+```
+In order to obtain higher quality results sampling in the original function generating the plot can be increased
+
