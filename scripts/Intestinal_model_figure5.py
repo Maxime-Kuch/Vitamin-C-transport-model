@@ -143,8 +143,13 @@ def combined_mucus_effect(base_params, thicknesses):
         axes[1,1].grid(True, alpha=0.3)
         
         # Figure 5E plot
-        thic_range = np.linspace(1e-6, 500e-6, 70)
-        conc_range = np.linspace(1, 8000, 70)
+        '''
+        The number of samples in thic_range and conc_range was lowered here due to long
+        simulation time. These values can be increased to produce better results. In the manuscript
+        of the article 100 samples were used for each range.
+        '''
+        thic_range = np.linspace(1e-6, 500e-6, 10)
+        conc_range = np.linspace(1, 8000, 10)
         opt_thic=[]
         total_uptake=[]
         
@@ -168,7 +173,8 @@ def combined_mucus_effect(base_params, thicknesses):
         axes[1,2].grid(True, alpha=0.3)
         
         plt.tight_layout()
-        plt.show()
+        output_path = RESULTS_DIR / "figure_5.png"
+        plt.savefig(output_path, dpi=300)
           
 def main():
     N_nodes = 30 #Number of divisions for mucus layer implementation
@@ -212,8 +218,6 @@ def main():
   
     #Simulation time is usually longer, as intrecellular concnetrations are equilibrated with respect to initial condiditions
     #The concnetration impulses appear only after plateau region of concentration in each compartment is reached.
-    
-    kinetics(conc_base, time, uptake='intestine', plots=True)
     
     mucus_thicknesses = [0.4*123e-6, 123e-6, 450e-6] 
     combined_mucus_effect(conc_base, mucus_thicknesses)
