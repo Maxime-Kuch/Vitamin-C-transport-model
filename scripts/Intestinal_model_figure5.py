@@ -222,8 +222,12 @@ def main():
   
     #Simulation time is usually longer, as intrecellular concnetrations are equilibrated with respect to initial condiditions
     #The concnetration impulses appear only after plateau region of concentration in each compartment is reached.
-    mucus_thicknesses = [0.4*123e-6, 123e-6, 450e-6] 
-    combined_mucus_effect(conc_base, mucus_thicknesses)
+    
+    mucus_thicknesses = [0.4*123e-6, 123e-6, 450e-6]
+    
+    samples_conc = 10 #the sampling of concentration range for figure 5E plot. Use >50 for higher quality
+    samples_thic = 10 #the sampling of mucus thickness range for figure 5E plot. Use >50 for higher quality
+    combined_mucus_effect(conc_base, mucus_thicknesses, [samples_conc, samples_thic])
   
 if __name__ == "__main__":
     main()
