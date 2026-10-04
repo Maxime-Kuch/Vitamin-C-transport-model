@@ -15,9 +15,13 @@ sys.path.append(str(SRC_DIR))
 
 from intestinal_wall_model import simulate_transport
 
-def combined_mucus_effect(base_params, thicknesses):
+def combined_mucus_effect(base_params, thicknesses, smpl=[10,10]):
     '''
     Figure 5 A,B,C,D,E. Impact of mucus on vitamin C transport
+
+    The smpl parameteris a two-element list where the first indicates the number of samples for concentration range and the second element indicates the number of
+    samples for mucus thickness range. This parameters is used for optimal mucus thickness dose dependency plot (Figure 5E). The sampling is originally lower for faster
+    results, however it can be increased for higher quality.
     '''
     colors = ['#bd282f', '#eac511', '#4faea2']
     colors_2 = ['#7F0000', '#D73027', '#F4A3A3']
@@ -148,8 +152,8 @@ def combined_mucus_effect(base_params, thicknesses):
         simulation time. These values can be increased to produce better results. In the manuscript
         of the article 100 samples were used for each range.
         '''
-        thic_range = np.linspace(1e-6, 500e-6, 10)
-        conc_range = np.linspace(1, 8000, 10)
+        thic_range = np.linspace(1e-6, 500e-6, smpl[1])
+        conc_range = np.linspace(1, 8000, smpl[0])
         opt_thic=[]
         total_uptake=[]
         
@@ -218,7 +222,6 @@ def main():
   
     #Simulation time is usually longer, as intrecellular concnetrations are equilibrated with respect to initial condiditions
     #The concnetration impulses appear only after plateau region of concentration in each compartment is reached.
-    
     mucus_thicknesses = [0.4*123e-6, 123e-6, 450e-6] 
     combined_mucus_effect(conc_base, mucus_thicknesses)
   
