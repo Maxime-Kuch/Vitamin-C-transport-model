@@ -66,7 +66,7 @@ def kinetics(conc_params, t_max, uptake, plots=True):
                 'ytick.labelsize': 11,
                 'legend.fontsize': 11
         }):
-            # FIGURE 3/4 A: 
+            # FIGURE 4/5 A: 
             fig = plt.figure(figsize=(18, 10))
             gs = fig.add_gridspec(2, 5, height_ratios=[1, 1], hspace=0.35, wspace=0.45)
             fnt=14
@@ -153,9 +153,9 @@ def kinetics(conc_params, t_max, uptake, plots=True):
             plt.tight_layout()
 
             if uptake=='intestine':
-                output_path = RESULTS_DIR / "figure_3_AB.png"
-            else:
                 output_path = RESULTS_DIR / "figure_4_AB.png"
+            else:
+                output_path = RESULTS_DIR / "figure_5_AB.png"
               
             plt.savefig(output_path, dpi=300)
           
@@ -203,7 +203,7 @@ def michaelis_menten(S, V_max, K_m):
 
 def run_dose_response(stepping_values, mucus_thicknesses, base_params):
     """
-    Figure 3C and Figure 4C. Dose response and Michaelis-Menten fitting for bidirectional transport.
+    Figure 4C and Figure 5C. Dose response and Michaelis-Menten fitting for bidirectional transport.
     """
     fluxes_AB = np.zeros((len(mucus_thicknesses), len(stepping_values)))
     fluxes_BA = np.zeros((len(mucus_thicknesses), len(stepping_values)))
@@ -232,7 +232,7 @@ def run_dose_response(stepping_values, mucus_thicknesses, base_params):
     for i, muc in enumerate(mucus_thicknesses):
         popt, _ = curve_fit(michaelis_menten, stepping_values, fluxes_AB[i, :], p0=[max(fluxes_AB[i,:]), 500])
         popt_AB_list.append(popt)
-        print(f"{muc*1e6:>5.1f} um (Indeks {i}) | {popt[0]} | {popt[1]}")
+        print(f"{muc*1e6:>5.1f} um (Index {i}) | {popt[0]} | {popt[1]}")
 
     print("\n=========  B----->A =======")
     print(f"{'Mucus thickness':<18} | {'V_max [umol/h]':<15} | {'K_m [uM]':<10}")
@@ -240,12 +240,12 @@ def run_dose_response(stepping_values, mucus_thicknesses, base_params):
     for i, muc in enumerate(mucus_thicknesses):
         popt, _ = curve_fit(michaelis_menten, stepping_values, fluxes_BA[i, :], p0=[max(fluxes_BA[i,:]), 500])
         popt_BA_list.append(popt)
-        print(f"{muc*1e6:>5.1f} um (Indeks {i}) | {popt[0]:} | {popt[1]}")
+        print(f"{muc*1e6:>5.1f} um (Index {i}) | {popt[0]:} | {popt[1]}")
 
     
     S_smooth = np.linspace(min(stepping_values), max(stepping_values), 300)
 
-    # A -> B (Figure 3C)
+    # A -> B (Figure 4C)
     plt.figure(figsize=(7, 5))
     fnt = 14
     
@@ -277,7 +277,7 @@ def run_dose_response(stepping_values, mucus_thicknesses, base_params):
     output_path = RESULTS_DIR / "figure_3_C.png"
     plt.savefig(output_path, dpi=300)
 
-    # B -> A (Figure 4C)
+    # B -> A (Figure 5C)
     plt.figure(figsize=(7, 5))
     
     plt.fill_between(
