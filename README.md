@@ -10,20 +10,20 @@ In order to reproduce the results presented in the manuscript run the correspond
 ```bash
 pip install -r requirements.txt
 ```
-**Model validation - figure 1 and figure 2**
+**Model validation - figure 2 and figure 3**
 ```bash
-python scripts/validation_figure1_figure2.py
+python scripts/validation_figure2_figure3.py
 ```
-**Intestinal wall transport - figure 3 and figure 4**
+**Intestinal wall transport - figure 4 and figure 5**
 ```bash
-python scripts/Intestinal_model_figure3_figure4.py
+python scripts/Intestinal_model_figure4_figure5.py
 ```
-**The mucus impact - figure 5**
+**The mucus impact - figure 6**
 
 Here the simulations might take longer, mainly due to optimal mucus dose dependency plot, the script runs a substantial amount of simulations to produce the result. Thus 
 here the number of samples in the plot was reduced for a faster result with lower quality.
 ```bash
-python scripts/Intestinal_model_figure5.py
+python scripts/Intestinal_model_figure6.py
 ```
 In order to obtain higher quality results sampling in the original function generating the plot can be increased. To do that the values of variables ```samples_conc``` and ```samples_thic``` in the ```main()``` function of `scripts/Intestinal_model_figure5.py` can be increased. In the original figure for the article manuscript ```samples_conc=70``` and ```samples_thic=70``` were used. In these settings the simulation took around 30 min.
 # How to cite
