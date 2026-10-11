@@ -274,7 +274,7 @@ def run_dose_response(stepping_values, mucus_thicknesses, base_params):
     plt.legend()
     plt.tight_layout()
     
-    output_path = RESULTS_DIR / "figure_3_C.png"
+    output_path = RESULTS_DIR / "figure_4_C.png"
     plt.savefig(output_path, dpi=300)
 
     # B -> A (Figure 5C)
@@ -303,7 +303,7 @@ def run_dose_response(stepping_values, mucus_thicknesses, base_params):
     plt.legend()
     plt.tight_layout()
   
-    output_path = RESULTS_DIR / "figure_4_C.png"
+    output_path = RESULTS_DIR / "figure_5_C.png"
     plt.savefig(output_path, dpi=300)
 
 
@@ -353,7 +353,7 @@ def main():
     
     kinetics(conc_base, time, uptake='intestine', plots=True)
     kinetics(conc_base, time, uptake='blood', plots=True)
-  
+    
     mucus_thicknesses = [0.4*123e-6, 123e-6, 450e-6] 
     stepping_values = np.concatenate([
         np.arange(0, 100, 10),
