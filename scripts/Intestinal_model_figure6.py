@@ -17,7 +17,7 @@ from intestinal_wall_model import simulate_transport
 
 def combined_mucus_effect(base_params, thicknesses, smpl=[10,10]):
     '''
-    Figure 5 A,B,C,D,E. Impact of mucus on vitamin C transport
+    Figure 6 A,B,C,D,E. Impact of mucus on vitamin C transport
 
     The smpl parameteris a two-element list where the first indicates the number of samples for concentration range and the second element indicates the number of
     samples for mucus thickness range. This parameters is used for optimal mucus thickness dose dependency plot (Figure 5E). The sampling is originally lower for faster
@@ -61,7 +61,7 @@ def combined_mucus_effect(base_params, thicknesses, smpl=[10,10]):
         idx_start = np.argmax(t_raw >= 250.4)
         t_plot = t_raw[idx_start:] - 250.4
         
-        # Figure 5 A plot
+        # Figure 6 A plot
         for i, res in enumerate(results):
             C_membrane = res['mucus'][-1, idx_start:] 
             axes[0,0].plot(t_plot, C_membrane, color=colors[i], linewidth=1.5, label=labels[i])
@@ -74,7 +74,7 @@ def combined_mucus_effect(base_params, thicknesses, smpl=[10,10]):
         axes[0,0].legend(frameon=False)
         axes[0,0].grid(True, alpha=0.3)
     
-        #Figure 5B plot
+        #Figure 6B plot
         time_snapshot = 250.5 + impulse_duration + 1.0 
         
         for i, res in enumerate(results):
@@ -92,7 +92,7 @@ def combined_mucus_effect(base_params, thicknesses, smpl=[10,10]):
         axes[0,1].set_ylabel('Asc concentration [$\mathrm{\mu}$M]')
         axes[0,1].grid(True, alpha=0.3)
     
-        #Figure 5C plot
+        #Figure 6C plot
         
         thic_range = np.linspace(10e-6, 500e-6, 30)
         conc_range = [5000, 2500, 500]
@@ -120,7 +120,7 @@ def combined_mucus_effect(base_params, thicknesses, smpl=[10,10]):
         axes[1,0].legend(frameon=False)
         axes[1,0].grid(True, alpha=0.3)
         
-        # Figure 5D plot
+        # Figure 6D plot
         thic_range = np.linspace(1e-6, 500e-6, 30)
         conc_range = [5000, 250, 60]
         total_efflux = []
@@ -146,7 +146,7 @@ def combined_mucus_effect(base_params, thicknesses, smpl=[10,10]):
         axes[1,1].legend(frameon=False)
         axes[1,1].grid(True, alpha=0.3)
         
-        # Figure 5E plot
+        # Figure 6E plot
         '''
         The number of samples in thic_range and conc_range was lowered here due to long
         simulation time. These values can be increased to produce better results. In the manuscript
@@ -177,7 +177,7 @@ def combined_mucus_effect(base_params, thicknesses, smpl=[10,10]):
         axes[1,2].grid(True, alpha=0.3)
         
         plt.tight_layout()
-        output_path = RESULTS_DIR / "figure_5.png"
+        output_path = RESULTS_DIR / "figure_6.png"
         plt.savefig(output_path, dpi=300)
           
 def main():
