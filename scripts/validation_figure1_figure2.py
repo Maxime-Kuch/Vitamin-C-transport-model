@@ -25,7 +25,6 @@ val_file_intr = DATA_DIR / "experimental_intracellular_data.csv"
 df_extr = pd.read_csv(val_file_extr, sep=";", header=None, decimal=",")
 df_intra = pd.read_csv(val_file_intr, sep=";", header=None, decimal=",")
     
-# Przykładowe wyciągnięcie kolumn (np. czas i pomiary stężenia in vitro)
 
 PARAM_NAMES = {
         'pH_in': r'$pH_{\mathrm{in}}$', 
@@ -88,7 +87,7 @@ def calculate_metrics(t_model, y_model, df_exp):
 
 
 def plot_baseline_fit(params, df_exp):
-    """Figure 1 (A): model basic validation on experimental intracellular data from HCT116 cell culture"""
+    """Figure 2 (A): model basic validation on experimental intracellular data from HCT116 cell culture"""
     t, y_in, y_out = solve_cell_model((0, 48), params)
     nrmse, err_C, err_t = calculate_metrics(t, y_in, df_exp)
     print('Baseline fit metrics ------------------')
@@ -121,18 +120,17 @@ def plot_baseline_fit(params, df_exp):
         plt.title('Baseline model validation with experimental data', pad=15)
         plt.tight_layout()
       
-        output_path = RESULTS_DIR / "figure_1_A.png"
+        output_path = RESULTS_DIR / "figure_2_A.png"
         plt.savefig(output_path, dpi=300)
-        print(f"Wykres zapisano pomyślnie do: {output_path}")
+       
 
 
 def run_sensitivity_and_plot(params, bounds_dict, df_exp):
     """
-    Figure 2: sensitivity analysis of the model - comparison of kinetic profiles 
+    Figure 3: sensitivity analysis of the model - comparison of kinetic profiles 
     """
     res_min, res_max = {}, {}
     
-    # Przygotowanie siatki wykresów (2 wiersze x 4 kolumny dla 7 parametrów)
     with plt.rc_context({
             'font.size': 12,
             'axes.titlesize': 14,
@@ -194,14 +192,14 @@ def run_sensitivity_and_plot(params, bounds_dict, df_exp):
             
         plt.tight_layout()
 
-        output_path = RESULTS_DIR / "figure_2.png"
+        output_path = RESULTS_DIR / "figure_3.png"
         plt.savefig(output_path, dpi=300)
-        print(f"Wykres zapisano pomyślnie do: {output_path}")
+        
     
     return res_min, res_max
 
 def plot_sensitivity_heatmap(res_min, res_max, bounds_dict):
-    """Figure 1 (B, C, D): The results of sensitivity analysis presented with normalized metrics"""
+    """Figure 2 (B, C, D): The results of sensitivity analysis presented with normalized metrics"""
     df_min = pd.DataFrame.from_dict(res_min, orient='index', columns=['NRMSE', r'$\Delta C_{\mathrm{max}}$', r'$\Delta t_{\mathrm{max}}$'])
     df_max = pd.DataFrame.from_dict(res_max, orient='index', columns=['NRMSE', r'$\Delta C_{\mathrm{max}}$', r'$\Delta t_{\mathrm{max}}$'])
     
@@ -218,18 +216,16 @@ def plot_sensitivity_heatmap(res_min, res_max, bounds_dict):
     }):
         fig, (ax1, ax_center, ax2) = plt.subplots(1, 3, figsize=(15, 6), gridspec_kw={'width_ratios': [4, 1.5, 4]}) 
         
-        # Heatmapa dla wartości MINIMUM
+       
         sns.heatmap(df_min, annot=True, fmt=".2f", cmap="RdBu_r", center=0, 
                     linewidths=1, linecolor='white', cbar_kws={'label': 'Relative Error'}, ax=ax1)
         ax1.set_title('Minimal Boundary Effect', pad=20, fontsize=18)
         ax1.set_ylabel('Parameter')
-        
-        # Heatmapa dla wartości MAXIMUM
+
         sns.heatmap(df_max, annot=True, fmt=".2f", cmap="RdBu_r", center=0, 
                     linewidths=1, linecolor='white', cbar_kws={'label': 'Relative Error'}, ax=ax2)
         ax2.set_title('Maximal Boundary Effect', pad=20, fontsize=18)
-        
-        # Środkowa kolumna informacyjna (Mini-tabela)
+    
         ax_center.axis('off') 
         ax_center.set_ylim(ax1.get_ylim())
         y_coords = ax1.get_yticks() 
@@ -248,9 +244,9 @@ def plot_sensitivity_heatmap(res_min, res_max, bounds_dict):
             ax_center.text(0.8, y, str(w_max), ha='center', va='center', fontsize=11)
             
         plt.tight_layout()
-        output_path = RESULTS_DIR / "figure_1_BCD.png"
+        output_path = RESULTS_DIR / "figure_2_BCD.png"
         plt.savefig(output_path, dpi=300)
-        print(f"Wykres zapisano pomyślnie do: {output_path}")
+      
 
 
 def main():
@@ -289,12 +285,12 @@ def main():
         'cell_vol_fac': [1, 3]
     }
     
-    # Figure 1 (A)
+    # Figure 2 (A)
     plot_baseline_fit(PARAMS, df_intra)
-     # Figure 2 
+     # Figure 3 
     results_min, results_max = run_sensitivity_and_plot(PARAMS, SENSITIVITY_BOUNDS, df_intra)
         
-    # Figure 1 (B, C, D)
+    # Figure 2 (B, C, D)
     plot_sensitivity_heatmap(results_min, results_max, SENSITIVITY_BOUNDS)
 
 if __name__ == "__main__":
